@@ -62,6 +62,15 @@ class _QuizScreenState extends State<QuizScreen> {
     return ElevatedButton(
       onPressed: _answered ? null : () => _submitAnswer(option),
       child: Text(option),
+      style: ElevatedButton.styleFrom(
+        backgroundColor: Colors.indigo.shade400,
+        foregroundColor: Colors.white,
+        padding: EdgeInsets.symmetric(vertical: 12),
+        textStyle: TextStyle(fontSize: 16),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12),
+        ),
+      ),
     );
   }
 
@@ -73,38 +82,82 @@ class _QuizScreenState extends State<QuizScreen> {
 
     if (_currentQuestionIndex >= _questions.length) {
       return Scaffold(
-        body: Center(child: Text('Quiz Finished! Your Score: $_score/${_questions.length}')),
+        appBar: AppBar(title: Text('Quiz App'), backgroundColor: Colors.deepPurple),
+        body: Center(
+          child: Text(
+            'Quiz Finished!\nYour Score: $_score/${_questions.length}',
+            style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+            textAlign: TextAlign.center,
+          ),
+        ),
       );
     }
 
     final question = _questions[_currentQuestionIndex];
 
     return Scaffold(
-      appBar: AppBar(title: Text('Quiz App')),
+      appBar: AppBar(
+        title: Text('Quiz App'),
+        backgroundColor: Colors.deepPurple,
+      ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Text('Question ${_currentQuestionIndex + 1}/${_questions.length}',
-                style: TextStyle(fontSize: 20)),
+            ElevatedButton.icon(
+              onPressed: () {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text('Current Score: $_score/${_questions.length}'),
+                    duration: Duration(seconds: 2),
+                  ),
+                );
+              },
+              icon: Icon(Icons.score),
+              label: Text("View Score"),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.deepPurpleAccent,
+                foregroundColor: Colors.white,
+              ),
+            ),
             SizedBox(height: 16),
-            Text(question.question, style: TextStyle(fontSize: 18)),
+            Text(
+              'Question ${_currentQuestionIndex + 1}/${_questions.length}',
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            ),
             SizedBox(height: 16),
-            ...question.options.map((option) => _buildOptionButton(option)),
+            Text(
+              question.question,
+              style: TextStyle(fontSize: 18),
+            ),
+            SizedBox(height: 16),
+            ...question.options.map((option) => Padding(
+              padding: const EdgeInsets.symmetric(vertical: 4.0),
+              child: _buildOptionButton(option),
+            )),
             SizedBox(height: 20),
             if (_answered)
               Text(
                 _feedbackText,
                 style: TextStyle(
-                  fontSize: 16,
-                  color: _selectedAnswer == question.correctAnswer ? Colors.green : Colors.red,
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: _selectedAnswer == question.correctAnswer
+                      ? Colors.green.shade700
+                      : Colors.red.shade700,
                 ),
               ),
             if (_answered)
-              ElevatedButton(
-                onPressed: _nextQuestion,
-                child: Text('Next Question'),
+              Padding(
+                padding: const EdgeInsets.only(top: 12.0),
+                child: ElevatedButton(
+                  onPressed: _nextQuestion,
+                  child: Text('Next Question'),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.orangeAccent,
+                  ),
+                ),
               ),
           ],
         ),

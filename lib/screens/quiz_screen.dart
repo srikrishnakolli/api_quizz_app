@@ -28,6 +28,11 @@ class _QuizScreenState extends State<QuizScreen> {
       setState(() {
         _questions = questions;
         _loading = false;
+        _currentQuestionIndex = 0;
+        _score = 0;
+        _answered = false;
+        _selectedAnswer = "";
+        _feedbackText = "";
       });
     } catch (e) {
       print(e);
@@ -58,6 +63,13 @@ class _QuizScreenState extends State<QuizScreen> {
     });
   }
 
+  void _restartQuiz() {
+    setState(() {
+      _loading = true;
+    });
+    _loadQuestions();
+  }
+
   Widget _buildOptionButton(String option) {
     return ElevatedButton(
       onPressed: _answered ? null : () => _submitAnswer(option),
@@ -82,12 +94,39 @@ class _QuizScreenState extends State<QuizScreen> {
 
     if (_currentQuestionIndex >= _questions.length) {
       return Scaffold(
-        appBar: AppBar(title: Text('Quiz App'), backgroundColor: Colors.deepPurple),
+        appBar: AppBar(
+          title: Text('Quiz App'),
+          backgroundColor: Colors.deepPurple,
+        ),
         body: Center(
-          child: Text(
-            'Quiz Finished!\nYour Score: $_score/${_questions.length}',
-            style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
-            textAlign: TextAlign.center,
+          child: Padding(
+            padding: const EdgeInsets.all(24.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  'Quiz Finished!',
+                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                ),
+                SizedBox(height: 16),
+                Text(
+                  'Your Score: $_score/${_questions.length}',
+                  style: TextStyle(fontSize: 20),
+                ),
+                SizedBox(height: 24),
+                ElevatedButton.icon(
+                  onPressed: _restartQuiz,
+                  icon: Icon(Icons.replay),
+                  label: Text('Restart Quiz'),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.green,
+                    foregroundColor: Colors.white,
+                    padding: EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                    textStyle: TextStyle(fontSize: 16),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       );

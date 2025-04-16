@@ -74,15 +74,6 @@ class _QuizScreenState extends State<QuizScreen> {
     return ElevatedButton(
       onPressed: _answered ? null : () => _submitAnswer(option),
       child: Text(option),
-      style: ElevatedButton.styleFrom(
-        backgroundColor: Colors.indigo.shade400,
-        foregroundColor: Colors.white,
-        padding: EdgeInsets.symmetric(vertical: 12),
-        textStyle: TextStyle(fontSize: 16),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12),
-        ),
-      ),
     );
   }
 
@@ -94,10 +85,7 @@ class _QuizScreenState extends State<QuizScreen> {
 
     if (_currentQuestionIndex >= _questions.length) {
       return Scaffold(
-        appBar: AppBar(
-          title: Text('Quiz App'),
-          backgroundColor: Colors.deepPurple,
-        ),
+        appBar: AppBar(title: Text('Quiz App')),
         body: Center(
           child: Padding(
             padding: const EdgeInsets.all(24.0),
@@ -118,12 +106,6 @@ class _QuizScreenState extends State<QuizScreen> {
                   onPressed: _restartQuiz,
                   icon: Icon(Icons.replay),
                   label: Text('Restart Quiz'),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.green,
-                    foregroundColor: Colors.white,
-                    padding: EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-                    textStyle: TextStyle(fontSize: 16),
-                  ),
                 ),
               ],
             ),
@@ -135,10 +117,7 @@ class _QuizScreenState extends State<QuizScreen> {
     final question = _questions[_currentQuestionIndex];
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Quiz App'),
-        backgroundColor: Colors.deepPurple,
-      ),
+      appBar: AppBar(title: Text('Quiz App')),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -155,10 +134,6 @@ class _QuizScreenState extends State<QuizScreen> {
               },
               icon: Icon(Icons.score),
               label: Text("View Score"),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.deepPurpleAccent,
-                foregroundColor: Colors.white,
-              ),
             ),
             SizedBox(height: 16),
             Text(
@@ -193,9 +168,6 @@ class _QuizScreenState extends State<QuizScreen> {
                 child: ElevatedButton(
                   onPressed: _nextQuestion,
                   child: Text('Next Question'),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.orangeAccent,
-                  ),
                 ),
               ),
           ],
